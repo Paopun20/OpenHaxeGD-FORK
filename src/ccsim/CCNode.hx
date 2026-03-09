@@ -781,11 +781,11 @@ class CCNode {
     * If a class want's to extend the 'addChild' behavior it only needs
     * to override this method
     */
-    public function addChild(child:CCNode, localZOrder:Int, tag:Int, name:String) {
+    public function addChild(child:CCNode, ?localZOrder:Null<Int>, ?tag:Null<Int>, ?name:String) {
         CCASSERT( child != null, "Argument must be non-nil");
         CCASSERT( child._parent == null, "child already added. It can't be added again");
         // Port Note by Crzy: Extra stuff to merge both addChild types...
-        CCASSERT( tag != null && name != null, "Child's tag and name cannot be defined in same call");
+        CCASSERT( !(tag != null && name != null), "Child's tag and name cannot be defined in same call");
         var setTag:Bool = true;
         var newTag:Int = tag;
         var newZOrder:Int = localZOrder;
@@ -984,7 +984,7 @@ class CCNode {
     public function processParentFlags(parentTransform:Mat4, parentFlags:Int):Int {
         if (_usingNormalizedPosition) {
             CCASSERT(_parent != null, "setPositionNormalized() doesn't work with orphan nodes");
-            if (parentFlags != null || _normalizedPositionDirty) {
+            if (parentFlags != 0 || _normalizedPositionDirty) {
                 var s:CCSize = _parent.getContentSize();
                 _position.x = _normalizedPosition.x * s.width;
                 _position.y = _normalizedPosition.y * s.height;
@@ -1001,7 +1001,7 @@ class CCNode {
         var flags:Int = parentFlags;
         //MARK: line 1191, port need
 
-        if(flags != null)
+        if(flags != 0)
             _modelViewTransform = this.transform(parentTransform);
 
         _transformUpdated = false;
@@ -1248,7 +1248,7 @@ class CCNode {
         _scheduler.unscheduleUpdate(this);
 
         if (GameConfig.CC_ENABLE_SCRIPT_BINDING) {
-            if (_updateScriptHandler != null) {
+            if (_updateScriptHandler != 0) {
                 CCScriptEngineManager.getInstance().getScriptEngine().removeScriptHandler(_updateScriptHandler);
             }
         }

@@ -75,7 +75,7 @@ class ModLoader {
         if (GameConfig.LAPIS_DEBUG) trace('[LAPIS] Mods path: $modsPath');
         if (!FileSystem.exists(modsPath)) {
             FileSystem.createDirectory(modsPath);
-            trace("[LAPIS] Created mods directory at $modsPath");
+            trace('[LAPIS] Created mods directory at $modsPath');
             if (onComplete != null) onComplete();
             return;
         }
